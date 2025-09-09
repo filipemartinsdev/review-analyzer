@@ -1,1 +1,2 @@
-# review-analyzer
+# ✉️ Review Analizer
+## Projeto acadêmico - Engenharia de Software
