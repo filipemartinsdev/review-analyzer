@@ -1,5 +1,7 @@
 package com.reviewanalyzer;
 
+import com.reviewanalyzer.controller.ReviewController;
+
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -14,9 +16,9 @@ public class Application {
         HttpServer server = HttpServer.create(new InetSocketAddress( 8080), 0);
 
 
-        HttpContext test = server.createContext("/test", new TesteHandler());
+        HttpContext homeContext = server.createContext("/", new ReviewController());
 
-//        HttpContext ep = server.createContext("/test/");
+//        HttpContext endPoint = server.createContext("/test/");
 
         server.start();
         System.out.println("Server online: http://localhost:8080/test");
