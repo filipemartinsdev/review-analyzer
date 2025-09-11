@@ -1,5 +1,6 @@
 package com.reviewanalyzer;
 
+import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -12,12 +13,13 @@ public class TesteHandler implements HttpHandler {
         System.out.println("method: "+exchange.getRequestMethod());
         System.out.println("PATH: "+exchange.getRequestURI().getPath());
 
-        String response = "Hello teste";
-        exchange.sendResponseHeaders(200, response.length());
-        exchange.getResponseBody().write(response.getBytes());
 
-        System.out.println("RESPONSE_STATUS_CODE: "+exchange.getResponseCode());
-        System.out.println();
+
+//        exchange.sendResponseHeaders(200, response.length());
+//        exchange.getResponseBody().write(response.getBytes());
+
+//        System.out.println("RESPONSE_STATUS_CODE: "+exchange.getResponseCode());
+//        System.out.println();
 
         exchange.close();
     }
