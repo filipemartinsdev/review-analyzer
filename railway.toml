@@ -4,7 +4,7 @@ builder = "NIXPACKS"
 
 [deploy]
 # comando inicial para deploy
-startCommand = "java -jar target/review-analyzer-1.0-SNAPSHOT.jar"
+startCommand = "java -jar target/review-analyzer-1.0.jar"
 
 # definir o tipo de aplicação
 [nickspacks]
