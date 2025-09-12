@@ -1,0 +1,9 @@
+com/reviewanalyzer/model/ReviewRequest.class
+com/reviewanalyzer/Application.class
+com/reviewanalyzer/model/ReviewResponse.class
+com/reviewanalyzer/exception/ApiException.class
+com/reviewanalyzer/config/CorsConfig.class
+com/reviewanalyzer/service/Sentiment.class
+com/reviewanalyzer/controller/ReviewController.class
+com/reviewanalyzer/service/ReviewAnalyzer.class
+com/reviewanalyzer/service/ReviewService.class
