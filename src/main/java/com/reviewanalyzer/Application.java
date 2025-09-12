@@ -12,8 +12,11 @@ import java.net.InetSocketAddress;
 
 public class Application {
     public static void main(String[] args) throws IOException, InterruptedException {
+//        Pegar PORT do RailWays
+        String portEnv = System.getenv("PORT");
+        int port = portEnv != null ? Integer.parseInt(portEnv) : 8080;
 
-        HttpServer server = HttpServer.create(new InetSocketAddress( 8080), 0);
+        HttpServer server = HttpServer.create(new InetSocketAddress( port), 0);
 
         HttpContext homeContext = server.createContext("/", new ReviewController());
 
