@@ -1,0 +1,9 @@
+/home/filipe/dev/personal/projects/java/review-analyzer/src/main/java/com/reviewanalyzer/controller/ReviewController.java
+/home/filipe/dev/personal/projects/java/review-analyzer/src/main/java/com/reviewanalyzer/service/ReviewAnalyzer.java
+/home/filipe/dev/personal/projects/java/review-analyzer/src/main/java/com/reviewanalyzer/model/ReviewRequest.java
+/home/filipe/dev/personal/projects/java/review-analyzer/src/main/java/com/reviewanalyzer/service/Sentiment.java
+/home/filipe/dev/personal/projects/java/review-analyzer/src/main/java/com/reviewanalyzer/config/CorsConfig.java
+/home/filipe/dev/personal/projects/java/review-analyzer/src/main/java/com/reviewanalyzer/service/ReviewService.java
+/home/filipe/dev/personal/projects/java/review-analyzer/src/main/java/com/reviewanalyzer/exception/ApiException.java
+/home/filipe/dev/personal/projects/java/review-analyzer/src/main/java/com/reviewanalyzer/model/ReviewResponse.java
+/home/filipe/dev/personal/projects/java/review-analyzer/src/main/java/com/reviewanalyzer/Application.java
