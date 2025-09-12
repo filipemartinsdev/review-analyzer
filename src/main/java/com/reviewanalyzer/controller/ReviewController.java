@@ -8,35 +8,42 @@ import java.io.IOException;
 public class ReviewController implements HttpHandler {
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        if("POST".equals(httpExchange.getRequestMethod())){
-            postReview(httpExchange);
+        httpExchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+        httpExchange.getResponseHeaders().add("Access-Control-Allow-Methods", "POST, OPTIONS");
+        httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");
+
+        if("OPTIONS".equals(httpExchange.getRequestMethod())){
+            httpExchange.sendResponseHeaders(200, 0);
+            httpExchange.close();
         }
 
+        else if("POST".equals(httpExchange.getRequestMethod())){
+            processReview(httpExchange);
+            httpExchange.close();
+        }
+
+
+//        Recusar outros métodos além de POST
         else {
-            httpExchange.sendResponseHeaders(400, 0);
+            httpExchange.sendResponseHeaders(405, 0);
             httpExchange.close();
         }
     }
 
-    private static void getReview(HttpExchange exchange) throws IOException {
-        System.out.println("[Server] Nova conexão recebida!");
-        System.out.println(exchange.getProtocol()+" GET: "+" "+exchange.getRequestURI().getPath());
-
-        String response = "{\"text\":\"Hello World\"}";
-
-        exchange.sendResponseHeaders(200, response.length());
-        exchange.close();
-        System.out.println();
-    }
-
-    private static void postReview(HttpExchange exchange) throws IOException {
+//    Processar REQUEST POST
+    private static void processReview(HttpExchange exchange) throws IOException {
         System.out.println("[Server] Nova conexão recebida!");
         System.out.println(exchange.getProtocol()+" "+exchange.getRequestMethod()+" "+exchange.getRequestURI().getPath());
 
-//        String response = "{\"error\":\"Hello World\"}";
+        String response = "{\"status\":\"API OK\"}";
 
-        exchange.sendResponseHeaders(400, 0);
-        exchange.close();
+        exchange.getResponseHeaders().set("Content-Type", "application/json");
+        exchange.getResponseBody().write(response.getBytes());
+
+        exchange.sendResponseHeaders(200, response.length());
+
+        System.out.println(response);
+        System.out.println();
         System.out.println();
     }
 }
