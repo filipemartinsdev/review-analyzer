@@ -15,12 +15,9 @@ public class Application {
 
         HttpServer server = HttpServer.create(new InetSocketAddress( 8080), 0);
 
-
         HttpContext homeContext = server.createContext("/", new ReviewController());
 
-//        HttpContext endPoint = server.createContext("/test/");
-
         server.start();
-        System.out.println("Server online: http://localhost:8080/test");
+        System.out.println("Server online: http://localhost:8080/");
     }
 }
