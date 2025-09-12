@@ -18,8 +18,6 @@ public class Application {
 
         HttpContext homeContext = server.createContext("/", new ReviewController());
 
-//        HttpContext endPoint = server.createContext("/test/");
-
         server.start();
         System.out.println("Server online: http://localhost:8080/test");
     }

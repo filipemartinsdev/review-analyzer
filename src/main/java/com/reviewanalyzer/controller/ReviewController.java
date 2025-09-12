@@ -8,13 +8,13 @@ import java.io.IOException;
 public class ReviewController implements HttpHandler {
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-
-        if ("GET".equals(httpExchange.getRequestMethod())){
-            getReview(httpExchange);
+        if("POST".equals(httpExchange.getRequestMethod())){
+            postReview(httpExchange);
         }
 
-        else if("POST".equals(httpExchange.getRequestMethod())){
-            postReview(httpExchange);
+        else {
+            httpExchange.sendResponseHeaders(400, 0);
+            httpExchange.close();
         }
     }
 
