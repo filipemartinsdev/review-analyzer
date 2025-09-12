@@ -41,7 +41,8 @@ public class ReviewController implements HttpHandler {
 
         String response = "{\"status\":\"API OK\"}";
 
-        exchange.getResponseHeaders().set("Content-Type", "application/json");
+        exchange.getResponseHeaders().add("Content-Type", "application/json");
+        exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
         exchange.sendResponseHeaders(200, response.length());
         exchange.getResponseBody().write(response.getBytes());
 
