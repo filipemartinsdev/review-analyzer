@@ -33,17 +33,20 @@ public class ReviewController implements HttpHandler {
 //    Processar REQUEST POST
     private static void processReview(HttpExchange exchange) throws IOException {
         System.out.println("[Server] Nova conexão recebida!");
-        System.out.println(exchange.getProtocol()+" "+exchange.getRequestMethod()+" "+exchange.getRequestURI().getPath());
+        System.out.println(
+                exchange.getProtocol()+" "+
+                exchange.getRequestMethod()+" "+
+                exchange.getRequestURI().getPath()
+        );
 
         String response = "{\"status\":\"API OK\"}";
 
         exchange.getResponseHeaders().set("Content-Type", "application/json");
+        exchange.sendResponseHeaders(200, response.length());
         exchange.getResponseBody().write(response.getBytes());
 
-        exchange.sendResponseHeaders(200, response.length());
 
         System.out.println(response);
-        System.out.println();
         System.out.println();
     }
 }
