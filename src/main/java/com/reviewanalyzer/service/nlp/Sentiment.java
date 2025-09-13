@@ -1,4 +1,4 @@
-package com.reviewanalyzer.nlp;
+package com.reviewanalyzer.service.nlp;
 
 public enum Sentiment {
     POSITIVE, NEUTRAL, NEGATIVE;

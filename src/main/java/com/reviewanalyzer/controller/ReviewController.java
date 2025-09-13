@@ -1,6 +1,9 @@
 package com.reviewanalyzer.controller;
 
+import com.reviewanalyzer.model.ReviewRequest;
 import com.reviewanalyzer.model.ReviewResponse;
+import com.reviewanalyzer.service.ReviewAnalyzer;
+import com.reviewanalyzer.service.ReviewService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -21,8 +24,17 @@ public class ReviewController implements HttpHandler {
         }
 
         else if("POST".equals(httpExchange.getRequestMethod())){
-            processReview(httpExchange);
-            httpExchange.close();
+            if ("/process".equals(httpExchange.getRequestURI().getPath())) {
+                processReview(httpExchange);
+
+                System.out.println("Response code: "+httpExchange.getResponseCode());
+                httpExchange.close();
+            }
+            else {
+                httpExchange.sendResponseHeaders(400, 0);
+                System.out.println("Response code: 400 Bad Request");
+                httpExchange.close();
+            }
         }
 
 //        405 Method Not Allowed
@@ -44,21 +56,28 @@ public class ReviewController implements HttpHandler {
         System.out.println("Path: "+PATH);
 
         String requestBody;
+//        TODO: IMPLEMENTAR JSON PARSER
+        String[] requestArrTest = new String[]{"review1", "review2"};
 
-        ReviewResponse requestOBJ = new ReviewResponse();
+        ReviewRequest requestOBJ = new ReviewRequest(requestArrTest);
         ReviewResponse responseOBJ = new ReviewResponse();
 
+        ReviewService.analyzeReviews(requestOBJ.getStrings(), responseOBJ);
 
-        String response = "{\"status\":\"API OK\"}";
+//        TODO: IMPLEMENTAR JSON PARSER
+        String responseJson = "{" +
+                "\"frPercentPositive\":"+responseOBJ.getFrPercentPositive()+"," +
+                "\"frPercentNeutral\":"+responseOBJ.getFrPercentNeutral()+"," +
+                "\"frPercentNegative\":"+responseOBJ.getFrPercentNegative()+"," +
+                "\"fiPositive\":"+responseOBJ.getFiPositive()+"," +
+                "\"fiNeutral\":"+responseOBJ.getFiNeutral()+"," +
+                "\"fiNegative\":"+responseOBJ.getFiNegative()+
+                "}";
 
         exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
 
-        exchange.sendResponseHeaders(200, response.length());
-        exchange.getResponseBody().write(response.getBytes());
-
-
-        System.out.println(response);
-        System.out.println();
+        exchange.sendResponseHeaders(200, responseJson.length());
+        exchange.getResponseBody().write(responseJson.getBytes());
     }
 }

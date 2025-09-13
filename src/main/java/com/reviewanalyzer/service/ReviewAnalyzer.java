@@ -1,7 +1,7 @@
 package com.reviewanalyzer.service;
 
-import com.reviewanalyzer.nlp.Analyzer;
-import com.reviewanalyzer.nlp.Sentiment;
+import com.reviewanalyzer.service.nlp.Analyzer;
+import com.reviewanalyzer.service.nlp.Sentiment;
 
 public class ReviewAnalyzer {
     public static Sentiment getSentiment(String review){

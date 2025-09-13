@@ -1,6 +1,7 @@
 package com.reviewanalyzer.service;
 
 import com.reviewanalyzer.model.ReviewResponse;
+import com.reviewanalyzer.service.nlp.Sentiment;
 
 // Classe principal do SERVICE
 
