@@ -67,5 +67,6 @@ public class ReviewResponse {
     public int getN() {
         return n;
     }
+
 }
 

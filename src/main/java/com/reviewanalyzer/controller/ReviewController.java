@@ -66,6 +66,7 @@ public class ReviewController implements HttpHandler {
 
 //        TODO: IMPLEMENTAR JSON PARSER
         String responseJson = "{" +
+                "\"n\":"+responseOBJ.getN()+"," +
                 "\"frPercentPositive\":"+responseOBJ.getFrPercentPositive()+"," +
                 "\"frPercentNeutral\":"+responseOBJ.getFrPercentNeutral()+"," +
                 "\"frPercentNegative\":"+responseOBJ.getFrPercentNegative()+"," +
