@@ -1,5 +1,6 @@
 package com.reviewanalyzer.controller;
 
+import com.reviewanalyzer.model.ReviewResponse;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -8,6 +9,8 @@ import java.io.IOException;
 public class ReviewController implements HttpHandler {
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        System.out.println("[Server] Nova conexão recebida!");
+
         httpExchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
         httpExchange.getResponseHeaders().add("Access-Control-Allow-Methods", "POST, OPTIONS");
         httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");
@@ -22,8 +25,7 @@ public class ReviewController implements HttpHandler {
             httpExchange.close();
         }
 
-
-//        Recusar outros métodos além de POST
+//        405 Method Not Allowed
         else {
             httpExchange.sendResponseHeaders(405, 0);
             httpExchange.close();
@@ -32,17 +34,26 @@ public class ReviewController implements HttpHandler {
 
 //    Processar REQUEST POST
     private static void processReview(HttpExchange exchange) throws IOException {
-        System.out.println("[Server] Nova conexão recebida!");
-        System.out.println(
-                exchange.getProtocol()+" "+
-                exchange.getRequestMethod()+" "+
-                exchange.getRequestURI().getPath()
-        );
+
+        String PROTOCOL = exchange.getProtocol();
+        String METHOD = exchange.getRequestMethod();
+        String PATH = exchange.getRequestURI().getPath();
+
+        System.out.println("Protocol: "+PROTOCOL);
+        System.out.println("Method: "+METHOD);
+        System.out.println("Path: "+PATH);
+
+        String requestBody;
+
+        ReviewResponse requestOBJ = new ReviewResponse();
+        ReviewResponse responseOBJ = new ReviewResponse();
+
 
         String response = "{\"status\":\"API OK\"}";
 
         exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+
         exchange.sendResponseHeaders(200, response.length());
         exchange.getResponseBody().write(response.getBytes());
 
