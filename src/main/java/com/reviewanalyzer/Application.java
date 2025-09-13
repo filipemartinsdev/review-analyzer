@@ -3,8 +3,6 @@ package com.reviewanalyzer;
 import com.reviewanalyzer.controller.ReviewController;
 
 import com.sun.net.httpserver.HttpContext;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
@@ -21,7 +19,6 @@ public class Application {
         HttpContext homeContext = server.createContext("/", new ReviewController());
 
         server.start();
-//        System.out.println("Server online: http://localhost:8080/");
         System.out.println("Server online: PORT "+port);
     }
 }
