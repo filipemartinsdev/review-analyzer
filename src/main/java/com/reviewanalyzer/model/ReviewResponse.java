@@ -1,6 +1,8 @@
 package com.reviewanalyzer.model;
 
 public class ReviewResponse {
+    private int n = 0; // <- Tamanho da amostra
+
     private float frPercentPositive;
     private float frPercentNeutral;
     private float frPercentNegative;
@@ -11,6 +13,9 @@ public class ReviewResponse {
 
     public ReviewResponse(){}
 
+    public void incrementN(){
+        this.n++;
+    }
     public void incrementFiPositive(){
         this.fiPositive++;
     }
@@ -51,24 +56,16 @@ public class ReviewResponse {
         return fiPositive;
     }
 
-    public void setFiPositive(int fiPositive) {
-        this.fiPositive = fiPositive;
-    }
-
     public int getFiNeutral() {
         return fiNeutral;
-    }
-
-    public void setFiNeutral(int fiNeutral) {
-        this.fiNeutral = fiNeutral;
     }
 
     public int getFiNegative() {
         return fiNegative;
     }
 
-    public void setFiNegative(int fiNegative) {
-        this.fiNegative = fiNegative;
+    public int getN() {
+        return n;
     }
 }
 
