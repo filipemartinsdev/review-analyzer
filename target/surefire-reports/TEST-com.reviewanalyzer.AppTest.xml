@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.reviewanalyzer.AppTest" time="0.023" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
     <property name="java.class.path" value="/home/filipe/dev/personal/projects/java/review-analyzer/target/test-classes:/home/filipe/dev/personal/projects/java/review-analyzer/target/classes:/home/filipe/.m2/repository/junit/junit/4.12/junit-4.12.jar:/home/filipe/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/filipe/.m2/repository/org/apache/opennlp/opennlp-tools/1.8.4/opennlp-tools-1.8.4.jar:/home/filipe/.m2/repository/com/google/code/gson/gson/2.13.2/gson-2.13.2.jar:/home/filipe/.m2/repository/com/google/errorprone/error_prone_annotations/2.41.0/error_prone_annotations-2.41.0.jar:"/>
+=======
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.reviewanalyzer.AppTest" time="0.082" tests="1" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="21"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/home/filipe/dev/personal/projects/java/review-analyzer/target/test-classes:/home/filipe/dev/personal/projects/java/review-analyzer/target/classes:/home/filipe/.m2/repository/junit/junit/4.12/junit-4.12.jar:/home/filipe/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/filipe/.m2/repository/org/apache/opennlp/opennlp-tools/1.8.4/opennlp-tools-1.8.4.jar:"/>
+>>>>>>> main
     <property name="java.vm.vendor" value="Ubuntu"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.vendor.url" value="https://ubuntu.com/"/>
@@ -12,9 +20,15 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-21-openjdk-amd64/lib"/>
+<<<<<<< HEAD
     <property name="sun.java.command" value="/home/filipe/dev/personal/projects/java/review-analyzer/target/surefire/surefirebooter462736679258052409.jar /home/filipe/dev/personal/projects/java/review-analyzer/target/surefire 2025-09-14T01-27-35_761-jvmRun1 surefire10136200917017732541tmp surefire_015379020260549243342tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/filipe/dev/personal/projects/java/review-analyzer/target/test-classes:/home/filipe/dev/personal/projects/java/review-analyzer/target/classes:/home/filipe/.m2/repository/junit/junit/4.12/junit-4.12.jar:/home/filipe/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/filipe/.m2/repository/org/apache/opennlp/opennlp-tools/1.8.4/opennlp-tools-1.8.4.jar:/home/filipe/.m2/repository/com/google/code/gson/gson/2.13.2/gson-2.13.2.jar:/home/filipe/.m2/repository/com/google/errorprone/error_prone_annotations/2.41.0/error_prone_annotations-2.41.0.jar:"/>
+=======
+    <property name="sun.java.command" value="/home/filipe/dev/personal/projects/java/review-analyzer/target/surefire/surefirebooter17856347004310671222.jar /home/filipe/dev/personal/projects/java/review-analyzer/target/surefire 2025-09-13T19-01-57_466-jvmRun1 surefire11709081619820817477tmp surefire_02567483237197020898tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/home/filipe/dev/personal/projects/java/review-analyzer/target/test-classes:/home/filipe/dev/personal/projects/java/review-analyzer/target/classes:/home/filipe/.m2/repository/junit/junit/4.12/junit-4.12.jar:/home/filipe/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/filipe/.m2/repository/org/apache/opennlp/opennlp-tools/1.8.4/opennlp-tools-1.8.4.jar:"/>
+>>>>>>> main
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="/home/filipe"/>
     <property name="user.language" value="en"/>
@@ -27,7 +41,11 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+<<<<<<< HEAD
     <property name="surefire.real.class.path" value="/home/filipe/dev/personal/projects/java/review-analyzer/target/surefire/surefirebooter462736679258052409.jar"/>
+=======
+    <property name="surefire.real.class.path" value="/home/filipe/dev/personal/projects/java/review-analyzer/target/surefire/surefirebooter17856347004310671222.jar"/>
+>>>>>>> main
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="21.0.8+9-Ubuntu-0ubuntu124.04.1"/>
     <property name="user.name" value="filipe"/>
@@ -53,5 +71,9 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
+<<<<<<< HEAD
   <testcase name="shouldAnswerWithTrue" classname="com.reviewanalyzer.AppTest" time="0.002"/>
+=======
+  <testcase name="shouldAnswerWithTrue" classname="com.reviewanalyzer.AppTest" time="0.005"/>
+>>>>>>> main
 </testsuite>
