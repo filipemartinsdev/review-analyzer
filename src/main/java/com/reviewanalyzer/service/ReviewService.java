@@ -2,17 +2,19 @@ package com.reviewanalyzer.service;
 
 import com.reviewanalyzer.model.ReviewResponse;
 import com.reviewanalyzer.service.nlp.Sentiment;
+import com.reviewanalyzer.service.nlp.SentimentAnalyzer;
 
 import java.util.List;
 
 // Classe principal do SERVICE
+// Camada de negócio
 
 public class ReviewService {
     public static void analyzeReviews(List<String> reviewList, ReviewResponse response){
         int n = reviewList.size(); // <-- Tamanho da amostra
 
         for (String text:reviewList){
-            Sentiment sentiment = ReviewAnalyzer.getSentiment(text);
+            Sentiment sentiment = SentimentAnalyzer.analyzeSentiment(text);
 
             switch (sentiment){
                 case POSITIVE:
