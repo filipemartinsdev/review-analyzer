@@ -2,12 +2,13 @@ package com.reviewanalyzer.controller;
 
 import com.reviewanalyzer.model.ReviewRequest;
 import com.reviewanalyzer.model.ReviewResponse;
-import com.reviewanalyzer.service.ReviewAnalyzer;
 import com.reviewanalyzer.service.ReviewService;
+
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-
 import java.io.IOException;
+
+import com.google.gson.Gson;
 
 public class ReviewController implements HttpHandler {
     @Override
@@ -54,6 +55,8 @@ public class ReviewController implements HttpHandler {
         System.out.println("Protocol: "+PROTOCOL);
         System.out.println("Method: "+METHOD);
         System.out.println("Path: "+PATH);
+
+        Gson gson = new Gson();
 
         String requestBody;
 //        TODO: IMPLEMENTAR JSON PARSER
