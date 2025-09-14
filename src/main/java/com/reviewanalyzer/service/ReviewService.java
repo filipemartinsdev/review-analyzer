@@ -3,13 +3,13 @@ package com.reviewanalyzer.service;
 import com.reviewanalyzer.model.ReviewResponse;
 import com.reviewanalyzer.service.nlp.Sentiment;
 
+import java.util.List;
+
 // Classe principal do SERVICE
 
 public class ReviewService {
-    public static void analyzeReviews(String[] reviewList, ReviewResponse response){
-        int n = reviewList.length; // <-- Tamanho da amostra
-
-        String[] out;
+    public static void analyzeReviews(List<String> reviewList, ReviewResponse response){
+        int n = reviewList.size(); // <-- Tamanho da amostra
 
         for (String text:reviewList){
             Sentiment sentiment = ReviewAnalyzer.getSentiment(text);
