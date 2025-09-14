@@ -20,10 +20,10 @@ public class ReviewResponse {
         this.fiPositive++;
     }
     public void incrementFiNeutral(){
-        this.fiPositive++;
+        this.fiNeutral++;
     }
     public void incrementFiNegative(){
-        this.fiPositive++;
+        this.fiNegative++;
     }
 
 //    >>>>>>>>>> GETTERS AND SETTERS <<<<<<<<<<

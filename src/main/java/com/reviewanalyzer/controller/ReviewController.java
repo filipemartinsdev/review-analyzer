@@ -1,13 +1,21 @@
 package com.reviewanalyzer.controller;
 
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.List;
+import java.io.IOException;
+
+import com.google.gson.JsonSyntaxException;
 import com.reviewanalyzer.model.ReviewRequest;
 import com.reviewanalyzer.model.ReviewResponse;
-import com.reviewanalyzer.service.ReviewAnalyzer;
 import com.reviewanalyzer.service.ReviewService;
+
+import com.sun.jdi.event.MethodExitEvent;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import java.io.IOException;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class ReviewController implements HttpHandler {
     @Override
@@ -55,30 +63,43 @@ public class ReviewController implements HttpHandler {
         System.out.println("Method: "+METHOD);
         System.out.println("Path: "+PATH);
 
-        String requestBody;
-//        TODO: IMPLEMENTAR JSON PARSER
-        String[] requestArrTest = new String[]{"review1", "review2"};
+        String requestBody = new String(exchange.getRequestBody().readAllBytes());
 
-        ReviewRequest requestOBJ = new ReviewRequest(requestArrTest);
+        if (requestBody.isBlank()){
+            exchange.sendResponseHeaders(500, 0);
+            exchange.close();
+            return;
+        }
+
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<String>>(){}.getType();
+        List<String> listFromJson;
+
+        try {
+            listFromJson = gson.fromJson(requestBody, listType);
+        } catch (JsonSyntaxException ex){
+            exchange.sendResponseHeaders(500, 0);
+            exchange.close();
+            return;
+        }
+
+        if (listFromJson.isEmpty()){
+            exchange.sendResponseHeaders(403, 0);
+            exchange.close();
+            return;
+        }
+
+        ReviewRequest requestOBJ = new ReviewRequest(listFromJson);
         ReviewResponse responseOBJ = new ReviewResponse();
 
         ReviewService.analyzeReviews(requestOBJ.getStrings(), responseOBJ);
 
-//        TODO: IMPLEMENTAR JSON PARSER
-        String responseJson = "{" +
-                "\"n\":"+responseOBJ.getN()+"," +
-                "\"frPercentPositive\":"+responseOBJ.getFrPercentPositive()+"," +
-                "\"frPercentNeutral\":"+responseOBJ.getFrPercentNeutral()+"," +
-                "\"frPercentNegative\":"+responseOBJ.getFrPercentNegative()+"," +
-                "\"fiPositive\":"+responseOBJ.getFiPositive()+"," +
-                "\"fiNeutral\":"+responseOBJ.getFiNeutral()+"," +
-                "\"fiNegative\":"+responseOBJ.getFiNegative()+
-                "}";
+        String jsonFromOBJ = gson.toJson(responseOBJ, responseOBJ.getClass());
 
         exchange.getResponseHeaders().add("Content-Type", "application/json");
         exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
 
-        exchange.sendResponseHeaders(200, responseJson.length());
-        exchange.getResponseBody().write(responseJson.getBytes());
+        exchange.sendResponseHeaders(200, jsonFromOBJ.length());
+        exchange.getResponseBody().write(jsonFromOBJ.getBytes());
     }
 }

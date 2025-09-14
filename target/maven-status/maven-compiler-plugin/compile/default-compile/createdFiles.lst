@@ -5,6 +5,10 @@ com/reviewanalyzer/model/ReviewResponse.class
 com/reviewanalyzer/exception/ApiException.class
 com/reviewanalyzer/config/CorsConfig.class
 com/reviewanalyzer/service/ReviewService$1.class
+<<<<<<< HEAD
+com/reviewanalyzer/controller/ReviewController$1.class
+=======
+>>>>>>> main
 com/reviewanalyzer/controller/ReviewController.class
 com/reviewanalyzer/service/nlp/Sentiment.class
 com/reviewanalyzer/service/ReviewAnalyzer.class
