@@ -15,10 +15,17 @@ public class ReviewService {
             Sentiment sentiment = ReviewAnalyzer.getSentiment(text);
 
             switch (sentiment){
-                case POSITIVE -> response.incrementFiPositive();
-                case NEUTRAL -> response.incrementFiNeutral();
-                case NEGATIVE -> response.incrementFiNegative();
+                case POSITIVE:
+                    response.incrementFiPositive();
+                    break;
+                case NEUTRAL:
+                    response.incrementFiNeutral();
+                    break;
+                case NEGATIVE:
+                    response.incrementFiNegative();
+                    break;
             }
+            response.incrementN();
         }
 
         // fr(%) = (fi/n)*100
