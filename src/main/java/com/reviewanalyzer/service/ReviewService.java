@@ -3,22 +3,29 @@ package com.reviewanalyzer.service;
 import com.reviewanalyzer.model.ReviewResponse;
 import com.reviewanalyzer.service.nlp.Sentiment;
 
+import java.util.List;
+
 // Classe principal do SERVICE
 
 public class ReviewService {
-    public static void analyzeReviews(String[] reviewList, ReviewResponse response){
-        int n = reviewList.length; // <-- Tamanho da amostra
-
-        String[] out;
+    public static void analyzeReviews(List<String> reviewList, ReviewResponse response){
+        int n = reviewList.size(); // <-- Tamanho da amostra
 
         for (String text:reviewList){
             Sentiment sentiment = ReviewAnalyzer.getSentiment(text);
 
             switch (sentiment){
-                case POSITIVE -> response.incrementFiPositive();
-                case NEUTRAL -> response.incrementFiNeutral();
-                case NEGATIVE -> response.incrementFiNegative();
+                case POSITIVE:
+                    response.incrementFiPositive();
+                    break;
+                case NEUTRAL:
+                    response.incrementFiNeutral();
+                    break;
+                case NEGATIVE:
+                    response.incrementFiNegative();
+                    break;
             }
+            response.incrementN();
         }
 
         // fr(%) = (fi/n)*100

@@ -1,4 +1,4 @@
 package com.reviewanalyzer.exception;
 
-public class ApiException {
+public class ApiException extends Throwable {
 }

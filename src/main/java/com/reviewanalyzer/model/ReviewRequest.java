@@ -1,13 +1,15 @@
 package com.reviewanalyzer.model;
 
+import java.util.List;
+
 public class ReviewRequest {
-    public ReviewRequest(String[] reviews){
+    public ReviewRequest(List<String> reviews){
         this.reviews = reviews;
     }
 
-    private String[] reviews; // Arrays de Strings que vem do JSON
+    private List<String> reviews; // Arrays de Strings que vem do JSON
 
-    public String[] getStrings(){
+    public List<String> getStrings(){
         return this.reviews;
     } // Arrays de Strings que vem do JSON
 }
