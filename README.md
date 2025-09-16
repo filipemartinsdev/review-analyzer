@@ -3,7 +3,7 @@
 
 ## 1. Sobre
 
-BackEnd(Web API) de projeto que analiza textos utilizando NLP (Natural Language Process), desenvolvido na disciplina de Ciência de Dados e análise Estatística durante o curso de Engenharia de Sofware.
+BackEnd(Web API) de projeto que analiza textos utilizando NLP (Natural Language Process) do ChatGPT, desenvolvido na disciplina de Ciência de Dados e análise Estatística durante o curso de Engenharia de Sofware.
 
 
 ## 2. Tecnologias utilizadas
@@ -11,8 +11,8 @@ BackEnd(Web API) de projeto que analiza textos utilizando NLP (Natural Language 
 - Java 17
 - Git
 - Apache Maven (Gerenciamento de projeto)
-- Apache OpenNLP (Biblioteca java para Processamento de Linguagem Natural)
 - Java HttpServer Client
+- API Chat GPT nano
 - Postman (Teste de API)
 - RailWay (deploy)
 - Intellij Community IDEA
