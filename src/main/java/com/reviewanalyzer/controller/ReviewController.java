@@ -55,14 +55,6 @@ public class ReviewController implements HttpHandler {
 //    Processar REQUEST POST
     private static void processReview(HttpExchange exchange) throws IOException {
 
-//        String PROTOCOL = exchange.getProtocol();
-//        String METHOD = exchange.getRequestMethod();
-//        String PATH = exchange.getRequestURI().getPath();
-
-//        System.out.println("Protocol: "+PROTOCOL);
-//        System.out.println("Method: "+METHOD);
-//        System.out.println("Path: "+PATH);
-
         String requestBody = new String(exchange.getRequestBody().readAllBytes());
 
         if (requestBody.isBlank()){

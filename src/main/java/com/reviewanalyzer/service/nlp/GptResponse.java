@@ -18,13 +18,12 @@ public class GptResponse {
         String messageContent = this.choices.get(0).getMessage().getContent();
 
         if (this.choices != null && !choices.isEmpty()) {
-            return choices.get(0).getMessage().getContent();
+            return messageContent;
         }
         return "";
-
     }
 
-    public List<GptClient.Choice> getChoises(){
+    public List<GptClient.Choice> getChoices(){
         return this.choices;
     }
 }

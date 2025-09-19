@@ -18,6 +18,11 @@ public class SentimentAnalyzer {
             return Sentiment.NEGATIVE;
         }
 
+        if ("neutral".equals(messageContent)){
+            return Sentiment.NEUTRAL;
+        }
+
+        System.out.println("Response Error");
         return Sentiment.NEUTRAL;
     }
 }
