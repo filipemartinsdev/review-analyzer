@@ -52,7 +52,7 @@ public class GptClient {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(API_URL))
-                    .header("Authorization", "Bearer " + GPT_API)
+                    .header("Authorization", GPT_API)
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(gptRequest)))
                     .build();
@@ -66,12 +66,12 @@ public class GptClient {
 
 
 //               ====== LOG ======
-//            System.out.println("REQUEST MESSAGES: ");
-//            gptRequest.getMessages().forEach((m)-> System.out.println(m.content));
+            System.out.println("REQUEST MESSAGES: ");
+            gptRequest.getMessages().forEach((m)-> System.out.println(m.content));
 //
 //            System.out.println();
-//            System.out.println("RESPONSE: ");
-//            System.out.println(gptResponse.getMessageContent());
+            System.out.println("RESPONSE: ");
+            System.out.println(gptResponse.getMessageContent());
 //            System.out.println(response.body());
 
         } catch (Exception e) {
