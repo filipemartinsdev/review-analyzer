@@ -28,12 +28,12 @@ public class GptClient {
 
         GptResponse gptResponse;
         String GPT_API = System.getenv("GPT_API");
-        if (GPT_API == null || GPT_API.isBlank() ){
-            List<Choice> choices = new ArrayList<>();
-            choices.add(new Choice(new Message("service", "neutral")));
-            System.out.println("[Server] GPT_API env not Found");
-            return new GptResponse(choices);
-        }
+//        if (GPT_API == null || GPT_API.isBlank() ){
+//            List<Choice> choices = new ArrayList<>();
+//            choices.add(new Choice(new Message("service", "neutral")));
+//            System.out.println("[Server] GPT_API env not Found");
+//            return new GptResponse(choices);
+//        }
 
         try {
             HttpRequest request = HttpRequest.newBuilder()
