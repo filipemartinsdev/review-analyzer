@@ -20,7 +20,7 @@ import com.google.gson.reflect.TypeToken;
 public class ReviewController implements HttpHandler {
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        System.out.println("[Server] Nova conexão recebida!");
+        System.out.println("[Server] Nova conexao recebida!");
 
         httpExchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
         httpExchange.getResponseHeaders().add("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -55,13 +55,13 @@ public class ReviewController implements HttpHandler {
 //    Processar REQUEST POST
     private static void processReview(HttpExchange exchange) throws IOException {
 
-        String PROTOCOL = exchange.getProtocol();
-        String METHOD = exchange.getRequestMethod();
-        String PATH = exchange.getRequestURI().getPath();
+//        String PROTOCOL = exchange.getProtocol();
+//        String METHOD = exchange.getRequestMethod();
+//        String PATH = exchange.getRequestURI().getPath();
 
-        System.out.println("Protocol: "+PROTOCOL);
-        System.out.println("Method: "+METHOD);
-        System.out.println("Path: "+PATH);
+//        System.out.println("Protocol: "+PROTOCOL);
+//        System.out.println("Method: "+METHOD);
+//        System.out.println("Path: "+PATH);
 
         String requestBody = new String(exchange.getRequestBody().readAllBytes());
 

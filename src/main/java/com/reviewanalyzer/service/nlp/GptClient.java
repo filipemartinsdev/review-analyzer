@@ -16,21 +16,6 @@ public class GptClient {
     static String API_URL = "https://api.openai.com/v1/chat/completions";
 
 
-//    public static void main(String[] args) {
-//        Scanner scan = new Scanner(System.in);
-//        String str;
-//        while (true){
-//            System.out.print("REVIEW: ");
-//            str = scan.nextLine();
-//            GptResponse response = getSentiment(str);
-//            System.out.println("RESPONSE: "+response.getMessageContent());
-//        }
-
-//        GptResponse response = getSentiment("");
-//        System.out.println(response.getMessageContent());
-//    }
-
-
     public static GptResponse getSentiment(String text){
         String model = "gpt-5-nano";
 
@@ -46,6 +31,7 @@ public class GptClient {
         if (GPT_API == null || GPT_API.isBlank() ){
             List<Choice> choices = new ArrayList<>();
             choices.add(new Choice(new Message("service", "neutral")));
+            System.out.println("[Server] GPT_API env not Found");
             return new GptResponse(choices);
         }
 
@@ -66,11 +52,11 @@ public class GptClient {
 
 
 //               ====== LOG ======
-            System.out.println("REQUEST MESSAGES: ");
+            System.out.print("REVIEW: ");
             gptRequest.getMessages().forEach((m)-> System.out.println(m.content));
 //
 //            System.out.println();
-            System.out.println("RESPONSE: ");
+            System.out.print("RESPONSE: ");
             System.out.println(gptResponse.getMessageContent());
 //            System.out.println(response.body());
 
