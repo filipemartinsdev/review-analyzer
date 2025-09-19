@@ -1,14 +1,5 @@
 package com.reviewanalyzer.service.nlp;
 
-import opennlp.tools.cmdline.tokenizer.SimpleTokenizerTool;
-import opennlp.tools.doccat.DocumentSample;
-import opennlp.tools.tokenize.Tokenizer;
-import opennlp.tools.util.ObjectStreamUtils;
-import opennlp.tools.util.TrainingParameters;
-import opennlp.tools.doccat.DocumentCategorizerME;
-import opennlp.tools.doccat.DoccatModel;
-import opennlp.tools.tokenize.SimpleTokenizer;
-
 public class SentimentAnalyzer {
     public static Sentiment analyzeSentiment(String text) {
 //        Checar String vazia/nula
@@ -16,7 +7,16 @@ public class SentimentAnalyzer {
             return Sentiment.NEUTRAL;
         }
 
+        GptResponse response = GptClient.getSentiment(text);
+        String messageContent = response.getMessageContent();
 
+        if ("positive".equals(messageContent)){
+            return Sentiment.POSITIVE;
+        }
+
+        if ("negative".equals(messageContent)) {
+            return Sentiment.NEGATIVE;
+        }
 
         return Sentiment.NEUTRAL;
     }
