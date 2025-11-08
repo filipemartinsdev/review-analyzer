@@ -1,14 +1,12 @@
 package com.reviewanalyzer.service.nlp;
 
 import com.google.gson.Gson;
+import io.github.cdimascio.dotenv.Dotenv;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
 
 public class GptClient {
@@ -27,12 +25,16 @@ public class GptClient {
         Gson gson = new Gson();
 
         GptResponse gptResponse;
-        String GPT_API = System.getenv("GPT_API");
+
+        String GPT_API_KEY = System.getenv("GPT_API");
+        if (GPT_API_KEY == null){
+            GPT_API_KEY = Dotenv.load().get("API_KEY");
+        }
 
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(API_URL))
-                    .header("Authorization", GPT_API)
+                    .header("Authorization", GPT_API_KEY)
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(gptRequest)))
                     .build();
