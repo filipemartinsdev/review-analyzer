@@ -27,15 +27,15 @@ public class ReviewController implements HttpHandler {
         httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");
 
 
-        String API_KEY = System.getenv("API_KEY");
-        List<String> authHeaders = httpExchange.getRequestHeaders().get("Authorization");
+//        String API_KEY = System.getenv("API_KEY");
+//        List<String> authHeaders = httpExchange.getRequestHeaders().get("Authorization");
 
-        if (authHeaders == null || !authHeaders.get(0).equals(API_KEY)){
-            System.out.println("[Server] User not authorized: "+httpExchange.getLocalAddress());
-            httpExchange.sendResponseHeaders(401, 0);
-            httpExchange.close();
-            return;
-        }
+//        if (authHeaders == null || !authHeaders.get(0).equals(API_KEY)){
+//            System.out.println("[Server] User not authorized: "+httpExchange.getLocalAddress());
+//            httpExchange.sendResponseHeaders(401, 0);
+//            httpExchange.close();
+//            return;
+//        }
 
         if("OPTIONS".equals(httpExchange.getRequestMethod())){
             httpExchange.sendResponseHeaders(200, 0);
