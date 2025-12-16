@@ -21,15 +21,25 @@ public class GptClient {
         Message message2 = new Message("system", "responda com a categoria que melhor se encaixa esse review ('positive', 'neutral', 'negative')");
 
         GptRequest gptRequest = new GptRequest(model, message1, message2);
+        GptResponse gptResponse;
 
         Gson gson = new Gson();
 
-        GptResponse gptResponse;
-
         String GPT_API_KEY = System.getenv("GPT_API");
-        if (GPT_API_KEY == null){
-            GPT_API_KEY = Dotenv.load().get("API_KEY");
+//        System.out.println("getenv API_KEY: "+GPT_API_KEY);
+        try {
+            if (GPT_API_KEY == null) {
+                GPT_API_KEY = Dotenv.load().get("API_KEY");
+            }
+        } catch (NullPointerException e){
+            System.out.println("Null pointer");
+            e.printStackTrace();
+        } catch (Exception e){
+            System.out.println("Erro  desconhecido");
+            e.printStackTrace();
         }
+//        System.out.println("dotenv API_KEY: "+GPT_API_KEY);
+//        System.out.println("por que essa porra nao ta passando?");
 
         try {
             HttpRequest request = HttpRequest.newBuilder()
@@ -44,7 +54,6 @@ public class GptClient {
 
 
             gptResponse = gson.fromJson(response.body(), GptResponse.class);
-
 
 
 //               ====== LOG ======
