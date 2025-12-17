@@ -32,7 +32,7 @@ public class ReviewService {
                     fiNeutral++;
                     break;
                 case NEGATIVE:
-                    fiNeutral++;
+                    fiNegative++;
                     break;
                 default:
                     fiNeutral++;

@@ -10,7 +10,7 @@ public class SentimentService {
 
         return switch (sentimentString) {
             case "positive" -> Sentiment.POSITIVE;
-            case "neutral" -> Sentiment.NEGATIVE;
+            case "neutral" -> Sentiment.NEUTRAL;
             case "negative" -> Sentiment.NEGATIVE;
             default -> Sentiment.NEUTRAL;
         };
