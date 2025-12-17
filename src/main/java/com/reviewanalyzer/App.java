@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
-public class Application {
+public class App {
     public static void main(String[] args) throws IOException, InterruptedException {
 //        Pegar PORT do RailWays
         String portEnv = System.getenv("PORT");

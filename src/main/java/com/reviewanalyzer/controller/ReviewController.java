@@ -51,9 +51,9 @@ public class ReviewController implements HttpHandler {
             }
             else {
                 apiResponse = ApiResponse.builder()
-                            .responseCode(400)
-                            .noContent()
-                            .build();
+                        .responseCode(400)
+                        .noContent()
+                        .build();
             }
         }
 
@@ -75,8 +75,7 @@ public class ReviewController implements HttpHandler {
     private static ApiResponse processRequest(String requestBody) throws IOException {
         if (requestBody.isBlank()){
             return ApiResponse.builder()
-                    .noContent()
-                    .responseCode(400)
+                    .badRequest()
                     .build();
         }
 
@@ -87,14 +86,12 @@ public class ReviewController implements HttpHandler {
             requestList = gson.fromJson(requestBody, listType);
         } catch (JsonSyntaxException ee){
             return ApiResponse.builder()
-                            .noContent()
-                            .responseCode(500)
-                            .build();
+                    .badRequest()
+                    .build();
         }
         if (requestList.isEmpty()){
             return ApiResponse.builder()
-                    .noContent()
-                    .responseCode(400)
+                    .badRequest()
                     .build();
         }
 
@@ -104,7 +101,7 @@ public class ReviewController implements HttpHandler {
         ReviewAnalysisContent apiResponseContent = reviewService.analyzeReviews(requestList);
         ApiResponse apiResponse = ApiResponse.builder()
                 .body(apiResponseContent)
-                .responseCode(200)
+                .ok()
                 .build();
         return apiResponse;
     }
