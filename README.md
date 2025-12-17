@@ -22,11 +22,11 @@ BackEnd(Web API) de projeto que analiza textos utilizando NLP (Natural Language 
 - Padrão SOLID
 
 ## 3. Como utilizar 
+
 ### Request
-- Endpoint: ```https://reviewanalyzer.up.railway.app/process```
+- Endpoint: ```/process```
 - Método: ```POST```
-- Header: ```{Content-Type: application/json}```
-- Body: JSON str Array
+- Body: JSON string Array
   
   exemplo:
   ```
@@ -36,21 +36,22 @@ BackEnd(Web API) de projeto que analiza textos utilizando NLP (Natural Language 
 ### Response
 ```
 {
-  "n": <int>,
-  "frPercentPositive": <float>,
-  "frPercentNeutral": <float>,
-  "frPercentNegative": <float>,
-  "fiPositive": <int>,
-  "fiNeutral": <int>,
-  "fiNegative": <int>
+  "responseCode": <int>,
+  "content": {
+    "n": <int>,
+    "frPercentPositive": <float>,
+    "frPercentNeutral": <float>,
+    "frPercentNegative": <float>,
+    "fiPositive": <int>,
+    "fiNeutral": <int>,
+    "fiNegative": <int>
+  }
 }
 ```
 
 - **n:** Tamanho da amostra;
 - **frPercent\<D\>:** Frequência relativa do dado D;
 - **fi\<D\>:** Frequência absoluta do dado D;
-
-  
 ## 4. Arquitetura
 
 <img src="images/arquitetura-em-camadas.png" alt="drawing" style="width: 40vw; display: block; padding: 20px"/>
