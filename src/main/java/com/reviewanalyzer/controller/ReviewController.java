@@ -1,16 +1,16 @@
 package com.reviewanalyzer.controller;
 
-import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.io.IOException;
 
 import com.google.gson.JsonSyntaxException;
-import com.reviewanalyzer.model.ReviewRequest;
-import com.reviewanalyzer.model.ReviewResponse;
+import com.reviewanalyzer.dto.*;
 import com.reviewanalyzer.service.ReviewService;
 
-import com.sun.jdi.event.MethodExitEvent;
+import com.reviewanalyzer.service.nlp.gpt.GptClient;
+import com.reviewanalyzer.service.nlp.NLPClient;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -18,91 +18,94 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 public class ReviewController implements HttpHandler {
+    public static Gson gson = new Gson();
+    private static final NLPClient nlpClient = new GptClient();
+
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        System.out.println("[Server] Nova conexao recebida!");
+//        System.out.println("[Server] Nova conexao recebida!");
+
+        final String requestMethod = httpExchange.getRequestMethod();
+        final String requestBody = new String(
+             httpExchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8
+        );
+        final String requestPath = httpExchange.getRequestURI().getPath();
 
         httpExchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
         httpExchange.getResponseHeaders().add("Access-Control-Allow-Methods", "POST, OPTIONS");
         httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");
+        httpExchange.getResponseHeaders().add("Content-Type", "application/json");
 
+        ApiResponse apiResponse;
 
-        String API_KEY = System.getenv("API_KEY");
-        List<String> authHeaders = httpExchange.getRequestHeaders().get("Authorization");
-
-        if (authHeaders == null || !authHeaders.get(0).equals(API_KEY)){
-            System.out.println("[Server] User not authorized: "+httpExchange.getLocalAddress());
-            httpExchange.sendResponseHeaders(401, 0);
-            httpExchange.close();
-            return;
+        if("OPTIONS".equals(requestMethod)){
+            apiResponse = ApiResponse.builder()
+                    .noContent()
+                    .responseCode(200)
+                    .build();
         }
 
-        if("OPTIONS".equals(httpExchange.getRequestMethod())){
-            httpExchange.sendResponseHeaders(200, 0);
-            httpExchange.close();
-        }
-
-        else if("POST".equals(httpExchange.getRequestMethod())){
-            if ("/process".equals(httpExchange.getRequestURI().getPath())) {
-                processReview(httpExchange);
-
-                System.out.println("Response code: "+httpExchange.getResponseCode());
-                httpExchange.close();
+        else if("POST".equals(requestMethod)){
+            if ("/process".equals(requestPath)) {
+                apiResponse = processRequest(requestBody);
             }
             else {
-                httpExchange.sendResponseHeaders(400, 0);
-                System.out.println("Response code: 400 Bad Request");
-                httpExchange.close();
+                apiResponse = ApiResponse.builder()
+                            .responseCode(400)
+                            .noContent()
+                            .build();
             }
         }
 
-//        405 Method Not Allowed
         else {
-            httpExchange.sendResponseHeaders(405, 0);
-            httpExchange.close();
+            apiResponse = ApiResponse.builder()
+                    .responseCode(405)
+                    .noContent()
+                    .build();
         }
+
+        String response = gson.toJson(apiResponse);
+
+        httpExchange.sendResponseHeaders(apiResponse.getResponseCode(), response.length());
+        httpExchange.getResponseBody().write(response.getBytes());
+        httpExchange.close();
     }
 
 //    Processar REQUEST POST
-    private static void processReview(HttpExchange exchange) throws IOException {
-
-        String requestBody = new String(exchange.getRequestBody().readAllBytes());
-
+    private static ApiResponse processRequest(String requestBody) throws IOException {
         if (requestBody.isBlank()){
-            exchange.sendResponseHeaders(500, 0);
-            exchange.close();
-            return;
+            return ApiResponse.builder()
+                    .noContent()
+                    .responseCode(400)
+                    .build();
         }
 
-        Gson gson = new Gson();
         Type listType = new TypeToken<List<String>>(){}.getType();
-        List<String> listFromJson;
+        List<String> requestList;
 
         try {
-            listFromJson = gson.fromJson(requestBody, listType);
-        } catch (JsonSyntaxException ex){
-            exchange.sendResponseHeaders(500, 0);
-            exchange.close();
-            return;
+            requestList = gson.fromJson(requestBody, listType);
+        } catch (JsonSyntaxException ee){
+            return ApiResponse.builder()
+                            .noContent()
+                            .responseCode(500)
+                            .build();
+        }
+        if (requestList.isEmpty()){
+            return ApiResponse.builder()
+                    .noContent()
+                    .responseCode(400)
+                    .build();
         }
 
-        if (listFromJson.isEmpty()){
-            exchange.sendResponseHeaders(403, 0);
-            exchange.close();
-            return;
-        }
 
-        ReviewRequest requestOBJ = new ReviewRequest(listFromJson);
-        ReviewResponse responseOBJ = new ReviewResponse();
+        ReviewService reviewService = new ReviewService(nlpClient);
 
-        ReviewService.analyzeReviews(requestOBJ.getStrings(), responseOBJ);
-
-        String jsonFromOBJ = gson.toJson(responseOBJ, responseOBJ.getClass());
-
-        exchange.getResponseHeaders().add("Content-Type", "application/json");
-        exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
-
-        exchange.sendResponseHeaders(200, jsonFromOBJ.length());
-        exchange.getResponseBody().write(jsonFromOBJ.getBytes());
+        ReviewAnalysisContent apiResponseContent = reviewService.analyzeReviews(requestList);
+        ApiResponse apiResponse = ApiResponse.builder()
+                .body(apiResponseContent)
+                .responseCode(200)
+                .build();
+        return apiResponse;
     }
 }

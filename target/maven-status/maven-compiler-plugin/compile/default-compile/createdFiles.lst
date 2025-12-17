@@ -1,9 +1,9 @@
 com/reviewanalyzer/model/ReviewRequest.class
 com/reviewanalyzer/exception/ApiException.class
 com/reviewanalyzer/service/nlp/GptRequest.class
-com/reviewanalyzer/controller/ReviewController$1.class
-com/reviewanalyzer/service/nlp/GptClient.class
 com/reviewanalyzer/service/nlp/Sentiment.class
+com/reviewanalyzer/service/nlp/GptClient.class
+com/reviewanalyzer/controller/ReviewController$1.class
 com/reviewanalyzer/service/nlp/SentimentAnalyzer.class
 com/reviewanalyzer/service/nlp/GptClient$Choice.class
 com/reviewanalyzer/Application.class

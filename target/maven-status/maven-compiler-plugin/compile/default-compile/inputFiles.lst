@@ -5,8 +5,8 @@
 /home/filipe/dev/personal/projects/java/review-analyzer/src/main/java/com/reviewanalyzer/service/nlp/SentimentAnalyzer.java
 /home/filipe/dev/personal/projects/java/review-analyzer/src/main/java/com/reviewanalyzer/service/nlp/GptClient.java
 /home/filipe/dev/personal/projects/java/review-analyzer/src/main/java/com/reviewanalyzer/service/nlp/GptRequest.java
-/home/filipe/dev/personal/projects/java/review-analyzer/src/main/java/com/reviewanalyzer/config/CorsConfig.java
-/home/filipe/dev/personal/projects/java/review-analyzer/src/main/java/com/reviewanalyzer/service/ReviewService.java
 /home/filipe/dev/personal/projects/java/review-analyzer/src/main/java/com/reviewanalyzer/exception/ApiException.java
+/home/filipe/dev/personal/projects/java/review-analyzer/src/main/java/com/reviewanalyzer/service/ReviewService.java
+/home/filipe/dev/personal/projects/java/review-analyzer/src/main/java/com/reviewanalyzer/config/CorsConfig.java
 /home/filipe/dev/personal/projects/java/review-analyzer/src/main/java/com/reviewanalyzer/model/ReviewResponse.java
 /home/filipe/dev/personal/projects/java/review-analyzer/src/main/java/com/reviewanalyzer/Application.java
