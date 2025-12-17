@@ -1,16 +1,14 @@
 package com.reviewanalyzer.controller;
 
-import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.io.IOException;
 
 import com.google.gson.JsonSyntaxException;
-import com.reviewanalyzer.model.ReviewRequest;
-import com.reviewanalyzer.model.ReviewResponse;
+import com.reviewanalyzer.dto.ReviewRequest;
+import com.reviewanalyzer.dto.ReviewResponse;
 import com.reviewanalyzer.service.ReviewService;
 
-import com.sun.jdi.event.MethodExitEvent;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 

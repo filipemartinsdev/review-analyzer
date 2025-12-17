@@ -1,4 +1,4 @@
-package com.reviewanalyzer.model;
+package com.reviewanalyzer.dto;
 
 public class ReviewResponse {
     private int n = 0; // <- Tamanho da amostra

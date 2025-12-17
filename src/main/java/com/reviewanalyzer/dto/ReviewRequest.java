@@ -1,4 +1,4 @@
-package com.reviewanalyzer.model;
+package com.reviewanalyzer.dto;
 
 import java.util.List;
 

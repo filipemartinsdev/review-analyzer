@@ -7,26 +7,26 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
-public class GptClient {
-//    static String GPT_API = "";
-    static String API_URL = "https://api.openai.com/v1/chat/completions";
+public class GptClient implements NLPService{
+    private static final String API_URL = "https://api.openai.com/v1/chat/completions";
 
 
-    public static GptResponse getSentiment(String text){
+    public Sentiment getSentiment(String text){
         String model = "gpt-5-nano";
 
         Message message1 = new Message("user", text);
         Message message2 = new Message("system", "responda com a categoria que melhor se encaixa esse review ('positive', 'neutral', 'negative')");
-
         GptRequest gptRequest = new GptRequest(model, message1, message2);
         GptResponse gptResponse;
 
         Gson gson = new Gson();
 
         String GPT_API_KEY = System.getenv("GPT_API");
-//        System.out.println("getenv API_KEY: "+GPT_API_KEY);
         try {
             if (GPT_API_KEY == null) {
                 GPT_API_KEY = Dotenv.load().get("API_KEY");
@@ -38,8 +38,6 @@ public class GptClient {
             System.out.println("Erro  desconhecido");
             e.printStackTrace();
         }
-//        System.out.println("dotenv API_KEY: "+GPT_API_KEY);
-//        System.out.println("por que essa porra nao ta passando?");
 
         try {
             HttpRequest request = HttpRequest.newBuilder()
@@ -51,29 +49,22 @@ public class GptClient {
 
             HttpResponse<String> response = HttpClient.newHttpClient()
                     .send(request, HttpResponse.BodyHandlers.ofString());
-
-
             gptResponse = gson.fromJson(response.body(), GptResponse.class);
-
-
-//               ====== LOG ======
-            System.out.print("REVIEW: ");
             gptRequest.getMessages().forEach((m)-> System.out.println(m.content));
-//
-//            System.out.println();
-            System.out.print("RESPONSE: ");
-            System.out.println(gptResponse.getMessageContent());
-//            System.out.println(response.body());
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        String messageContent = gptResponse.getMessageContent();
 
-        return gptResponse;
+        return switch (messageContent) {
+            case "positive" -> Sentiment.POSITIVE;
+            case "negative" -> Sentiment.NEGATIVE;
+            default -> Sentiment.NEUTRAL; // TODO: implement fallback
+        };
     }
 
-
-    public static class Choice {
+    private static class Choice {
         private Message message;
 
         public Choice(Message message){
@@ -87,7 +78,7 @@ public class GptClient {
         }
     }
 
-    public static class Message {
+    private static class Message {
         private String role;
         private String content;
 
@@ -106,4 +97,50 @@ public class GptClient {
             return content;
         }
     }
+
+    private static class GptResponse {
+        private List<Choice> choices;
+
+        public GptResponse() {}
+
+        public GptResponse(List<GptClient.Choice> choices) {
+            this.choices = new ArrayList<>();
+            this.choices.addAll(choices);
+        }
+
+        public String getMessageContent(){
+            String messageContent = this.choices.get(0).getMessage().getContent();
+
+            if (this.choices != null && !choices.isEmpty()) {
+                return messageContent;
+            }
+            return "";
+        }
+
+        public List<GptClient.Choice> getChoices(){
+            return this.choices;
+        }
+    }
+
+    private static class GptRequest {
+        private String model;
+
+        private List<Message> messages;
+
+        public GptRequest(String model, Message...message){
+            this.model = model;
+            this.messages = new ArrayList<>();
+
+            this.messages.addAll(Arrays.asList(message));
+        }
+
+        public String getModel(){
+            return this.model;
+        }
+
+        public List<Message> getMessages(){
+            return this.messages;
+        }
+    }
+
 }

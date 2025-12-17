@@ -1,6 +1,7 @@
 package com.reviewanalyzer.service;
 
-import com.reviewanalyzer.model.ReviewResponse;
+import com.reviewanalyzer.dto.ReviewResponse;
+import com.reviewanalyzer.service.nlp.GptClient;
 import com.reviewanalyzer.service.nlp.Sentiment;
 import com.reviewanalyzer.service.nlp.SentimentAnalyzer;
 
@@ -14,7 +15,7 @@ public class ReviewService {
         int n = reviewList.size(); // <-- Tamanho da amostra
 
         for (String text:reviewList){
-            Sentiment sentiment = SentimentAnalyzer.analyzeSentiment(text);
+            Sentiment sentiment = SentimentAnalyzer.analyzeSentiment(text, new GptClient());
 
             switch (sentiment){
                 case POSITIVE:
