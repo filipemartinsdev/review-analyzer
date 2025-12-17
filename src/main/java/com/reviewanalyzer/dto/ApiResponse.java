@@ -1,19 +1,47 @@
 package com.reviewanalyzer.dto;
 
-import java.net.http.HttpResponse;
+import lombok.Getter;
 
-public class ApiResponse<T> {
-    public Builder<T> build(){
-        return new Builder<>();
+@Getter
+public class ApiResponse {
+    private final Integer responseCode;
+    private final ReviewAnalysisContent content;
+
+    private ApiResponse(Integer responseCode, ReviewAnalysisContent content){
+        this.responseCode = responseCode;
+        this.content = content;
     }
 
-    public static class Builder<T> {
-        private int responseCode;
-        private String content;
+    public static Builder builder(){
+        return new Builder();
+    }
 
-        public Builder<T> noContent(){
-            this.responseCode = 200;
+    public static class Builder {
+        private Integer responseCode;
+        private ReviewAnalysisContent body;
+
+
+        public Builder body(ReviewAnalysisContent content){
+            this.body = content;
             return this;
+        }
+
+        public Builder responseCode(int responseCode){
+            this.responseCode = responseCode;
+            return this;
+        }
+
+        public Builder noContent(){
+            this.responseCode = 204;
+            this.body=null;
+            return this;
+        }
+
+        public ApiResponse build(){
+            if (this.responseCode==null){
+                throw new RuntimeException("Invalid Response Code");
+            }
+            return new ApiResponse(this.responseCode, this.body);
         }
     }
 }

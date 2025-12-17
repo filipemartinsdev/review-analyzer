@@ -1,39 +1,53 @@
 package com.reviewanalyzer.service;
 
-import com.reviewanalyzer.dto.ReviewResponse;
-import com.reviewanalyzer.service.nlp.GptClient;
-import com.reviewanalyzer.service.nlp.Sentiment;
-import com.reviewanalyzer.service.nlp.SentimentAnalyzer;
+import com.reviewanalyzer.dto.*;
+import com.reviewanalyzer.service.nlp.NLPClient;
 
 import java.util.List;
 
 // Classe principal do SERVICE
-// Camada de negócio
-
 public class ReviewService {
-    public static void analyzeReviews(List<String> reviewList, ReviewResponse response){
-        int n = reviewList.size(); // <-- Tamanho da amostra
+    private final NLPClient nlpClient;
 
-        for (String text:reviewList){
-            Sentiment sentiment = SentimentAnalyzer.analyzeSentiment(text, new GptClient());
+    public ReviewService(NLPClient nlpClient){
+        this.nlpClient = nlpClient;
+    }
 
+    public ReviewAnalysisContent analyzeReviews(List<String> reviewList){
+        NLPClientResponse nlpClientResponse = this.nlpClient.send(reviewList);
+        List<String> reviewSentimentList = nlpClientResponse.getSentiments();
+
+        int n = 0;
+        int fiPositive = 0;
+        int fiNeutral = 0;
+        int fiNegative = 0;
+
+        for (String reviewSentiment:reviewSentimentList){
+            Sentiment sentiment = SentimentService.getSentiment(reviewSentiment);
             switch (sentiment){
                 case POSITIVE:
-                    response.incrementFiPositive();
+                    fiPositive++;
                     break;
                 case NEUTRAL:
-                    response.incrementFiNeutral();
+                    fiNeutral++;
                     break;
                 case NEGATIVE:
-                    response.incrementFiNegative();
+                    fiNeutral++;
                     break;
+                default:
+                    fiNeutral++;
             }
-            response.incrementN();
+            n++;
         }
-
+        ReviewAnalysisContent responseContent = new ReviewAnalysisContent();
         // fr(%) = (fi/n)*100
-        response.setFrPercentPositive( (response.getFiPositive()/(float)n) *100F);
-        response.setFrPercentNeutral( (response.getFiNeutral()/(float)n) *100F);
-        response.setFrPercentNegative( (response.getFiNegative()/(float)n) *100F);
+        responseContent.setN(n);
+        responseContent.setFiPositive(fiPositive);
+        responseContent.setFiNeutral(fiNeutral);
+        responseContent.setFiNegative(fiNegative);
+        responseContent.setFrPercentPositive( (fiPositive/(float)n) *100F);
+        responseContent.setFrPercentNeutral( (fiNeutral/(float)n) *100F);
+        responseContent.setFrPercentNegative( (fiNegative/(float)n) *100F);
+        return responseContent;
     }
 }
