@@ -32,7 +32,6 @@ public class ApiResponse {
 
         public Builder ok(){
             this.responseCode = 200;
-            this.content = null;
             return this;
         }
 

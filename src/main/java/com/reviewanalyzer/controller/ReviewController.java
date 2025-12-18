@@ -1,24 +1,15 @@
 package com.reviewanalyzer.controller;
 
-import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.io.IOException;
 
-import com.google.gson.JsonSyntaxException;
 import com.reviewanalyzer.dto.*;
-import com.reviewanalyzer.service.GsonClient;
 import com.reviewanalyzer.service.JsonParser;
 import com.reviewanalyzer.service.ReviewService;
 
-import com.reviewanalyzer.service.nlp.gpt.GptClient;
-import com.reviewanalyzer.service.nlp.NLPClient;
-import com.reviewanalyzer.service.nlp.gpt.GptResponse;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 public class ReviewController implements HttpHandler {
     public final JsonParser jsonParser;
@@ -43,17 +34,15 @@ public class ReviewController implements HttpHandler {
         }
         else if("POST".equals(requestMethod)){
             apiResponse = this.handlePost(requestPath, requestBody);
-
         }
-
         else {
-            apiResponse = ApiResponse.builder().methodNotAllowed().build();
+            apiResponse = this.handleDefault();
         }
 
-        String response = this.jsonParser.toJson(apiResponse);
+        String responseBody = this.jsonParser.toJson(apiResponse);
 
-        httpExchange.sendResponseHeaders(apiResponse.getResponseCode(), response.length());
-        httpExchange.getResponseBody().write(response.getBytes());
+        httpExchange.sendResponseHeaders(apiResponse.getResponseCode(), responseBody.length());
+        httpExchange.getResponseBody().write(responseBody.getBytes());
         httpExchange.close();
     }
 
@@ -70,6 +59,7 @@ public class ReviewController implements HttpHandler {
             }
 
             ReviewAnalysisContent apiResponseContent = this.reviewService.analyzeReviews(requestList);
+
             return ApiResponse.builder()
                     .body(apiResponseContent)
                     .ok()
