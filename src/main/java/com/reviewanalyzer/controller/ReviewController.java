@@ -7,10 +7,13 @@ import java.io.IOException;
 
 import com.google.gson.JsonSyntaxException;
 import com.reviewanalyzer.dto.*;
+import com.reviewanalyzer.service.GsonClient;
+import com.reviewanalyzer.service.JsonParser;
 import com.reviewanalyzer.service.ReviewService;
 
 import com.reviewanalyzer.service.nlp.gpt.GptClient;
 import com.reviewanalyzer.service.nlp.NLPClient;
+import com.reviewanalyzer.service.nlp.gpt.GptResponse;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -18,75 +21,93 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 public class ReviewController implements HttpHandler {
-    public static Gson gson = new Gson();
-    private static final NLPClient nlpClient = new GptClient();
+    public final JsonParser jsonParser;
+    private final ReviewService reviewService;
+
+    public ReviewController(ReviewService reviewService, JsonParser jsonParser){
+        this.jsonParser = jsonParser;
+        this.reviewService = reviewService;
+    }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        final String requestMethod = httpExchange.getRequestMethod();
-        final String requestBody = new String(
-             httpExchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8
-        );
-        final String requestPath = httpExchange.getRequestURI().getPath();
+        final String requestMethod = this.readRequestMethod(httpExchange);
+        final String requestBody = this.readRequestBody(httpExchange);
+        final String requestPath = this.readRequestPath(httpExchange);
 
-        httpExchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
-        httpExchange.getResponseHeaders().add("Access-Control-Allow-Methods", "POST, OPTIONS");
-        httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");
-        httpExchange.getResponseHeaders().add("Content-Type", "application/json");
-
+        this.configureCors(httpExchange);
         ApiResponse apiResponse;
 
         if("OPTIONS".equals(requestMethod)){
-            apiResponse = ApiResponse.builder()
-                    .ok()
-                    .build();
+            apiResponse = this.handleOptions();
         }
-
         else if("POST".equals(requestMethod)){
-            if ("/process".equals(requestPath)) {
-                apiResponse = processRequest(requestBody);
-            }
-            else {
-                apiResponse = ApiResponse.builder().noContent().build();
-            }
+            apiResponse = this.handlePost(requestPath, requestBody);
+
         }
 
         else {
             apiResponse = ApiResponse.builder().methodNotAllowed().build();
         }
 
-        String response = gson.toJson(apiResponse);
+        String response = this.jsonParser.toJson(apiResponse);
 
         httpExchange.sendResponseHeaders(apiResponse.getResponseCode(), response.length());
         httpExchange.getResponseBody().write(response.getBytes());
         httpExchange.close();
     }
 
-//    Processar REQUEST POST
-    private static ApiResponse processRequest(String requestBody) throws IOException {
-        if (requestBody.isBlank()){
-            return ApiResponse.builder().badRequest().build();
+    private ApiResponse handlePost(String requestPath, String requestBody){
+        if ("/process".equals(requestPath)) {
+            if (requestBody.isBlank()){
+                return ApiResponse.builder().badRequest().build();
+            }
+            List<String> requestList;
+            try {
+                requestList = this.jsonParser.fromJsonList(requestBody, String.class);
+            } catch (RuntimeException e){
+                return ApiResponse.builder().badRequest().build();
+            }
+
+            ReviewAnalysisContent apiResponseContent = this.reviewService.analyzeReviews(requestList);
+            return ApiResponse.builder()
+                    .body(apiResponseContent)
+                    .ok()
+                    .build();
         }
-
-        Type listType = new TypeToken<List<String>>(){}.getType();
-        List<String> requestList;
-
-        try {
-            requestList = gson.fromJson(requestBody, listType);
-        } catch (JsonSyntaxException ee){
-            return ApiResponse.builder().badRequest().build();
+        else {
+            return ApiResponse.builder().notFound().build();
         }
-//        redundant?
-//        if (requestList.isEmpty()){
-//            return ApiResponse.builder().badRequest().build();
-//        }
+    };
 
-        ReviewService reviewService = new ReviewService(nlpClient);
-
-        ReviewAnalysisContent apiResponseContent = reviewService.analyzeReviews(requestList);
+    private ApiResponse handleOptions(){
         return ApiResponse.builder()
-                .body(apiResponseContent)
                 .ok()
                 .build();
+    };
+
+    private ApiResponse handleDefault(){
+        return ApiResponse.builder().methodNotAllowed().build();
+    };
+
+    private void configureCors(HttpExchange httpExchange){
+        httpExchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+        httpExchange.getResponseHeaders().add("Access-Control-Allow-Methods", "POST, OPTIONS");
+        httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");
+        httpExchange.getResponseHeaders().add("Content-Type", "application/json");
+    }
+
+    private String readRequestMethod(HttpExchange httpExchange){
+        return httpExchange.getRequestMethod();
+    }
+
+    private String readRequestBody(HttpExchange httpExchange) throws IOException{
+        return new String(
+                httpExchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8
+        );
+    }
+
+    private String readRequestPath(HttpExchange httpExchange){
+        return httpExchange.getRequestURI().getPath();
     }
 }
