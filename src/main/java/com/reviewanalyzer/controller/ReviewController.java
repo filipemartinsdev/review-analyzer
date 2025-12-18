@@ -23,8 +23,6 @@ public class ReviewController implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-//        System.out.println("[Server] Nova conexao recebida!");
-
         final String requestMethod = httpExchange.getRequestMethod();
         final String requestBody = new String(
              httpExchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8
@@ -40,8 +38,7 @@ public class ReviewController implements HttpHandler {
 
         if("OPTIONS".equals(requestMethod)){
             apiResponse = ApiResponse.builder()
-                    .noContent()
-                    .responseCode(200)
+                    .ok()
                     .build();
         }
 
@@ -50,18 +47,12 @@ public class ReviewController implements HttpHandler {
                 apiResponse = processRequest(requestBody);
             }
             else {
-                apiResponse = ApiResponse.builder()
-                        .responseCode(400)
-                        .noContent()
-                        .build();
+                apiResponse = ApiResponse.builder().noContent().build();
             }
         }
 
         else {
-            apiResponse = ApiResponse.builder()
-                    .responseCode(405)
-                    .noContent()
-                    .build();
+            apiResponse = ApiResponse.builder().methodNotAllowed().build();
         }
 
         String response = gson.toJson(apiResponse);
@@ -74,9 +65,7 @@ public class ReviewController implements HttpHandler {
 //    Processar REQUEST POST
     private static ApiResponse processRequest(String requestBody) throws IOException {
         if (requestBody.isBlank()){
-            return ApiResponse.builder()
-                    .badRequest()
-                    .build();
+            return ApiResponse.builder().badRequest().build();
         }
 
         Type listType = new TypeToken<List<String>>(){}.getType();
@@ -85,24 +74,19 @@ public class ReviewController implements HttpHandler {
         try {
             requestList = gson.fromJson(requestBody, listType);
         } catch (JsonSyntaxException ee){
-            return ApiResponse.builder()
-                    .badRequest()
-                    .build();
+            return ApiResponse.builder().badRequest().build();
         }
-        if (requestList.isEmpty()){
-            return ApiResponse.builder()
-                    .badRequest()
-                    .build();
-        }
-
+//        redundant?
+//        if (requestList.isEmpty()){
+//            return ApiResponse.builder().badRequest().build();
+//        }
 
         ReviewService reviewService = new ReviewService(nlpClient);
 
         ReviewAnalysisContent apiResponseContent = reviewService.analyzeReviews(requestList);
-        ApiResponse apiResponse = ApiResponse.builder()
+        return ApiResponse.builder()
                 .body(apiResponseContent)
                 .ok()
                 .build();
-        return apiResponse;
     }
 }
