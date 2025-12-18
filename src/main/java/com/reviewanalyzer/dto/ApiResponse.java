@@ -18,11 +18,10 @@ public class ApiResponse {
 
     public static class Builder {
         private Integer responseCode;
-        private ReviewAnalysisContent body;
-
+        private ReviewAnalysisContent content;
 
         public Builder body(ReviewAnalysisContent content){
-            this.body = content;
+            this.content = content;
             return this;
         }
 
@@ -31,17 +30,44 @@ public class ApiResponse {
             return this;
         }
 
+        public Builder ok(){
+            this.responseCode = 200;
+            this.content = null;
+            return this;
+        }
+
         public Builder noContent(){
             this.responseCode = 204;
-            this.body=null;
+            this.content =null;
+            return this;
+        }
+
+        public Builder badRequest(){
+            this.responseCode = 400;
+            this.content = null;
+            return this;
+        }
+
+        public Builder notFound(){
+            this.responseCode  = 404;
+            this.content = null;
+            return this;
+        }
+
+        public Builder methodNotAllowed(){
+            this.responseCode = 405;
+            this.content = null;
+            return this;
+        }
+
+        public Builder internalServerError(){
+            this.responseCode = 500;
+            this.content = null;
             return this;
         }
 
         public ApiResponse build(){
-            if (this.responseCode==null){
-                throw new RuntimeException("Invalid Response Code");
-            }
-            return new ApiResponse(this.responseCode, this.body);
+            return new ApiResponse(this.responseCode, this.content);
         }
     }
 }

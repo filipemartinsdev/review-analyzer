@@ -56,7 +56,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>com.reviewanalyzer.Application</mainClass>
+                  <mainClass>com.reviewanalyzer.App</mainClass>
                 </transformer>
               </transformers>
             </configuration>
